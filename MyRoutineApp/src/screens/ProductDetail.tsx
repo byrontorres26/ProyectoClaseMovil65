@@ -46,22 +46,22 @@ export default function ProductDetail({ route, navigation }: Props) {
     );
   }
 
-const handleSaveReview = () => {
-  if (rating === 0 || !usageDuration.trim()) return;
+  const handleSaveReview = () => {
+    if (rating === 0 || !usageDuration.trim()) return;
 
-  const review = {
-    rating,
-    comment: comment.trim(),
-    usageDuration: parseInt(usageDuration, 10),
-    usageUnit,
+    const review = {
+      rating,
+      comment: comment.trim(),
+      usageDuration: parseInt(usageDuration, 10),
+      usageUnit,
+    };
+
+    dispatch(addReview({ productId, review }));
+
+    navigation.goBack();
   };
-
-  dispatch(addReview({ productId, review }));
-
-  navigation.goBack();
-};
   const handleDelete = () => {
-    deleteProduct(productId);
+    dispatch(deleteProduct(productId))
     navigation.goBack();
   };
 
