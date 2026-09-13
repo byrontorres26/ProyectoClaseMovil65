@@ -10,7 +10,6 @@ import ScreenWrapper from "../components/ScreenWrapper";
 import SectionTitle from "../components/SectionTitle";
 import TagChip from "../components/TagChip";
 import { useTheme } from "../contexts/ThemeContext";
-import { useSkincare } from "../contexts/SkincareContext";
 import { RootStackParamList } from "../navigation/StackNavigator";
 import { TabsParamList } from "../navigation/TabsNavigator";
 import {
@@ -18,6 +17,9 @@ import {
   PRODUCT_CATEGORIES,
   CATEGORY_LABELS,
 } from "../utils/types/Skincare";
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { addProduct, deleteProduct, addReview } from '../store/slices/skincareSlice';
+
 
 type Props = CompositeScreenProps<
   BottomTabScreenProps<TabsParamList, "Products">,
@@ -25,7 +27,9 @@ type Props = CompositeScreenProps<
 >;
 
 export default function Products({ navigation }: Props) {
-  const { products, addProduct } = useSkincare();
+  const dispatch = useAppDispatch();
+  const products = useAppSelector(state => state.skincare.products);
+  //const { products, addProduct } = useState();
   const { colors } = useTheme();
   const [showForm, setShowForm] = useState(false);
   const [name, setName] = useState("");
@@ -34,12 +38,16 @@ export default function Products({ navigation }: Props) {
 
   const handleAddProduct = () => {
     if (!name.trim() || !brand.trim()) return;
-    addProduct({ name: name.trim(), brand: brand.trim(), category });
+    //addProduct({ name: name.trim(), brand: brand.trim(), category });
+    dispatch(addProduct({
+      name, brand, category
+    }))
     setName("");
     setBrand("");
     setCategory("cleanser");
     setShowForm(false);
   };
+
 
   return (
     <ScreenWrapper>
